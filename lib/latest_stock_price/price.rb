@@ -12,7 +12,7 @@ module LatestStockPrice
 
     private
     def get_stock_price
-      LatestStockPrice::DataFetcher.new(data_type: 'price', params: @params).perform
+      LatestStockPrice::DataFetcher.new(data_type: "price", params: @params).perform
     end
   end
 end
