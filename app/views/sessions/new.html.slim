@@ -1,0 +1,13 @@
+.ui.container
+  h1.ui.header.center.aligned
+    | Login
+  = form_for User.new, url: url_for(controller: 'sessions', action: 'create', method: :post), html: {class: "ui form"} do |f|
+    .field
+      = f.label :username, 'Username'
+      = f.text_field :username
+    .field
+      = f.label :password, 'Password'
+      = f.password_field :password
+    button.ui.button[type="submit"]
+      | Login
+  = link_to 'Don\'t have an account? Click here to register', register_path

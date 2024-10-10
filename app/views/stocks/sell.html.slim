@@ -1,0 +1,55 @@
+.ui.container
+  .ui.secondary.menu
+    .item
+      = link_to "Dashboard", dashboard_path
+    .item
+      = link_to "Stock Prices", stocks_prices_path
+    .item
+      = link_to "Stock Prices All", stocks_price_all_path
+    .right.menu
+      .item
+        .ui.icon.input
+          input[type="text" placeholder="Search..." id="search"]
+          i.search.link.icon#search
+      a.ui.item
+        = link_to "Logout", logout_path, method: :delete, class: "ui inverted red button", data: { "turbo-method": :delete }
+
+  h1.ui.header.center.aligned
+    | Sell Stock
+  .ui.grid
+    .ui.row
+      .column
+        .ui.fluid.card
+          .content
+            .header
+              h3
+              = "#{@stock[:stock]} (#{@stock[:symbol]})"
+              .content
+                .ui.small.feed
+                  .event
+                    .content
+                      .summary
+                        = form_for @transaction, url: url_for(controller: 'stocks', action: 'sell_stock'), method: 'post', html: { class: "ui form" } do |f|
+                          br
+                          .two.fields
+                            .field
+                              label
+                                | Amount owned
+                            .field
+                              = @stock[:quantity]
+                          .two.fields
+                            .field
+                              label
+                                | Amount to sell
+                            .field
+                              = f.number_field :quantity
+                          .two.fields
+                            .field
+                              label
+                                | Current Price
+                            .field
+                              = Stock.find(@stock[:id]).last_price
+                              = f.hidden_field :stock_id, value: @stock[:id]
+                          = f.submit "Sell", name: "Sell", class: "ui blue button"
+
+  

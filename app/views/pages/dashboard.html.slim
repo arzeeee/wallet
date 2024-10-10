@@ -1,0 +1,142 @@
+.ui.container
+  .ui.secondary.menu
+    .item
+      |  Dashboard 
+    .item
+      = link_to "Stock Prices", stocks_prices_path
+    .item
+      = link_to "Stock Price All", stocks_price_all_path
+    .right.menu
+      .item
+        .ui.icon.input
+          input[type="text" placeholder="Search..." id="search"]
+          i.search.link.icon
+      a.ui.item
+        = link_to "Logout", logout_path, method: :delete, class: "ui inverted red button", data: { "turbo-method": :delete }
+  h1.ui.header.center.aligned
+    | Dashboard
+  .ui.grid.ui.equal.height.grid
+    .ui.row.summaries
+      .ui.cards.centered
+        .card
+          .content
+            .header
+              | User Summary (
+              = @current_user.username
+              | )
+          .content
+            h4.ui.sub.header
+              | Activities
+            .ui.small.feed
+              .event
+                .content
+                  .summary
+                    a
+                      | Debit (Deposit)              : 
+                    = @debit.round(2)
+              .event
+                .content
+                  .summary
+                    a
+                      | Credit (Withdrawal)            : 
+                    = @credit.round(2)
+              .event
+                .content
+                  .summary
+                    a
+                      | Current Balance    : 
+                    = @current_user.wallet_balance.round(2) || 0
+        .card
+          .content
+            .header
+              | Stock Summary
+          .content
+            h4.ui.sub.header
+              | Details
+            .ui.small.feed
+              .event
+                .content
+                  .summary
+                    a
+                      | Stock Owned   : 
+                    = @stocks.size
+              .event
+                .content
+                  .summary
+                    a
+                      | Stock Value   : 
+                    = @stocks.sum { |s| s[:balance].round(2)}
+              .event
+                .content
+                  .summary
+                    a
+                    =  link_to "Click here to see your stocks", users_stocks_path
+      br
+    .ui.row
+      .column
+        .ui.fluid.card
+          .content
+            .header
+              | Create Deposit
+          .content
+            .ui.small.feed
+              .event
+                .content
+                  .summary
+                    = form_for @transaction, url: url_for(controller: 'transactions', action: 'deposit'), method: 'post', html: { class: "ui form" } do |f|
+                      .two.fields
+                        .field(style="text-align: center; align-content: center")
+                          label
+                            | Amount
+                        .field
+                          input[type="text" name="amount" placeholder="Deposit Amount"]
+                        = f.submit "Deposit", name: "deposit", class: "ui blue button", style: "position: absolute; bottom: 0; right: 0;"
+                      
+    .ui.row
+      .column
+        .ui.fluid.card
+          .content
+            .header
+              | Create Withdrawal
+          .content
+            .ui.small.feed
+              .event
+                .content
+                  .summary
+                    = form_for @transaction, url: url_for(controller: 'transactions', action: 'withdraw'), method: 'post', html: { class: "ui form" } do |f|
+                      .two.fields
+                        .field(style="text-align: center; align-content: center")
+                          label
+                            | Amount
+                        .field
+                          input[type="text" name="amount" placeholder="Withdraw Amount"]
+                        = f.submit "Withdraw", name: "withdraw", class: "ui blue button", style: "position: absolute; bottom: 0; right: 0;"
+
+    .ui.row
+      .column
+        .ui.fluid.card
+          .content
+            .header
+              | Transfer to Another User
+          .content
+            .ui.small.feed
+              .event
+                .content
+                  .summary
+                    = form_for @transaction, url: url_for(controller: 'transactions', action: 'transfer'), method: 'post', html: { class: "ui form" } do |f|
+                      .four.columns
+                        .two.fields.row
+                          .field(style="text-align: center; align-content: center")
+                            label
+                              | Username
+                          .field
+                            input[type="text" name="username" placeholder="Username to transfer"]
+                        .two.fields.row
+                          .field(style="text-align: center; align-content: center")
+                            label
+                              | Amount
+                          .field
+                            input[type="text" name="amount" placeholder="Amount"]
+
+                        = f.submit "Transfer", name: "deposit", class: "ui blue button", style: "position: absolute; bottom: 0; right: 0;"
+    .ui.row

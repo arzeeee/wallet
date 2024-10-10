@@ -14,15 +14,16 @@ module LatestStockPrice
     private
 
     def fetch_data
-      @url = ENV["BaseURL"] + @data_type
+      @url = ENV["RAPIDAPI_BASE_URL"] + @data_type
       add_params
 
       http = Net::HTTP.new(URI(@url).host, URI(@url).port)
       http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
       request = Net::HTTP::Get.new(@url)
-      request["X-RapidAPI-Key"] = ENV["RapidAPIKey"]
-      request["X-RapidAPI-Host"] = ENV["RapidAPIHost"]
+      request["X-RapidAPI-Key"] = ENV["RAPIDAPI_KEY"]
+      request["X-RapidAPI-Host"] = ENV["RAPIDAPI_HOST"]
 
       response = http.request(request)
       JSON.parse(response.read_body)

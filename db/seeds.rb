@@ -7,3 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+LatestStockPrice::PriceUpdater.new.perform
+User.create(username: "user1", email: "user1@email.com", password: "password")
+User.create(username: "user2", email: "user2@email.com", password: "password")

@@ -1,0 +1,63 @@
+.ui.container
+  .ui.secondary.menu
+    .item
+      = link_to "Dashboard", dashboard_path
+    .item
+      = link_to "Stock Prices", stocks_prices_path
+    .item
+      | Stock Price All
+    .right.menu
+      .item
+        .ui.icon.input
+          input[type="text" placeholder="Search..." id="search"]
+          i.search.link.icon
+      a.ui.item
+        = link_to "Logout", logout_path, method: :delete, class: "ui inverted red button", data: { "turbo-method": :delete }
+  h1.ui.header.center.aligned
+    | All Stock Price
+  .ui.grid.ui.equal.height.grid
+    .ui.row.summaries
+      .ui.cards.centered
+        - @stocks.each do |stock|
+          .card
+            .content.stockheader
+              = "#{stock.identifier} "
+              = "(#{stock.symbol})" 
+            .content
+              h4.ui.sub.header
+                | Price
+              .ui.small.feed
+                .event
+                  .content
+                    .summary
+                      a
+                        | Change     : 
+                      = stock.change
+                .event
+                  .content
+                    .summary
+                      a
+                        | Day High   : 
+                      = stock.day_high
+                .event
+                  .content
+                    .summary
+                      a
+                        | Day Low    : 
+                      = stock.day_low
+                .event
+                  .content
+                    .summary
+                      a
+                        | Last Price : 
+                      = stock.last_price
+                .event
+                  .content
+                    .summary
+                      a
+                        | Last Updated : 
+                      = stock.last_update_time.strftime("%B %d, %Y %H:%M:%S")
+
+  br
+  br
+  = link_to 'Update All Prices', stocks_update_prices_path, class: 'ui blue small button', method: :get
