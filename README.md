@@ -1,24 +1,34 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Requirements
+- Ruby 3.3.0
+- Rails 7.2.1
 
-Things you may want to cover:
+## How to Run
 
-* Ruby version
+Clone the repository
 
-* System dependencies
+`git clone https://github.com/arzeeee/wallet.git`
 
-* Configuration
+Get inside the directory
 
-* Database creation
+`cd wallet`
 
-* Database initialization
+Install all gemfile
 
-* How to run the test suite
+`bundle install`
 
-* Services (job queues, cache servers, search engines, etc.)
+Make a new `.env` file containing these lines
 
-* Deployment instructions
+```
+PROD_DATABASE=storage/production.sqlite3
+RAPIDAPI_KEY=52b451c1dfmsh89eaa6e00e7b079p108731jsn33feba9ad3b7
+RAPIDAPI_HOST=latest-stock-price.p.rapidapi.com
+RAPIDAPI_BASE_URL=https://latest-stock-price.p.rapidapi.com/
+```
 
-* ...
+Start server
+
+`rails s`
+
+Then access `localhost:3000` from your browser

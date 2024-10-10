@@ -1,0 +1,75 @@
+.ui.container
+  .ui.secondary.menu
+    .item
+      = link_to "Dashboard", dashboard_path
+    .item
+      | Stock Prices
+    .item
+      = link_to "Stock Prices All", stocks_price_all_path
+    .right.menu
+      .item
+        .ui.icon.input
+          input[type="text" placeholder="Search..." id="search"]
+          i.search.link.icon#search
+      a.ui.item
+        = link_to "Logout", logout_path, method: :delete, class: "ui inverted red button", data: { "turbo-method": :delete }
+  h1.ui.header.center.aligned
+    | Stock Prices 
+    = "Page #{@pagination[:current]}"
+  .ui.grid.ui.equal.height.grid
+    .ui.row.summaries
+      .ui.cards.centered
+        - if @stocks.blank?
+          | NO STOCK FOUND
+        - else
+          - @stocks.each do |stock|
+            - next unless stock[:quantity].positive?
+            .card
+              .content.stockheader
+                = "#{stock[:stock]} "
+                = "(#{stock[:symbol]})" 
+              .content
+                h4.ui.sub.header
+                  | Detail
+                .ui.small.feed
+                  .event
+                    .content
+                      .summary
+                        a
+                          | Quantity     : 
+                        = stock[:quantity]
+                  .event
+                    .content
+                      .summary
+                        a
+                          | Total   : 
+                        = stock[:balance].round(2)
+                  = link_to 'Sell This Stock', stocks_sell_path(stock: stock[:stock]), class: 'ui blue small button', method: :get
+
+  - if !@stocks.blank?
+    .ui.pagination.menu style="margin-top: 10px"
+      - if @pagination[:current] == 1
+        a.active.item
+          |  1 
+      - else
+        a.item href="#{stocks_prices_path(page: 1)}"
+          |  1 
+      - if @pagination[:current] > 4
+        .disabled.item
+          |  ... 
+      - for page in (@pagination[:current] - 2)..(@pagination[:current] + 2)
+        - if page > 1 && page < @pagination[:last_page]
+          - if page == @pagination[:current]
+            a.active.item
+              |  #{page} 
+          - else
+            a.item href="#{stocks_prices_path(page: page, stock: params[:stock])}"
+              |  #{page} 
+      - if @pagination[:current] < @pagination[:last_page] - 3
+        .disabled.item
+      - if @pagination[:current] == @pagination[:last_page]
+        a.active.item
+          |  #{@pagination[:last_page]} 
+      - else
+        a.item href="#{stocks_prices_path(page: @pagination[:last_page], stock: params[:stock])}"
+          |  #{@pagination[:last_page]} 
